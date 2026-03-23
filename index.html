@@ -6,41 +6,43 @@
     <title>Set Your Password | Rewire</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100-vh; margin: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
         .card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; }
         h1 { color: #1a1a1a; font-size: 24px; margin-bottom: 8px; }
-        p { color: #666; font-size: 14px; margin-bottom: 24px; }
+        p { color: #666; font-size: 14px; margin-bottom: 24px; line-height: 1.5; }
         input { width: 100%; padding: 12px; margin-bottom: 16px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; font-size: 16px; }
         button { width: 100%; padding: 12px; background-color: #000; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; font-weight: 600; }
         button:disabled { background-color: #ccc; }
         #success-state { display: none; }
-        .store-button { display: inline-block; margin-top: 10px; padding: 10px 20px; background: #222; color: white; text-decoration: none; border-radius: 5px; width: 80%; }
+        .store-button { display: inline-block; margin-top: 10px; padding: 12px 20px; background: #000; color: white; text-decoration: none; border-radius: 6px; width: 90%; font-weight: 600; }
     </style>
 </head>
 <body>
 
     <div class="card" id="form-state">
         <h1>Set your password</h1>
-        <p>Choose a password to start using Rewire.</p>
+        <p>Choose a password to start using your Rewire account.</p>
         
-        <input type="password" id="new-password" placeholder="New Password" required>
+        <input type="password" id="new-password" placeholder="New Password (min 6 chars)" required>
         <button id="save-btn" onclick="handlePasswordUpdate()">Save Password</button>
-        <p id="error-msg" style="color: red; margin-top: 10px; display: none;"></p>
+        <p id="error-msg" style="color: #ff4d4d; margin-top: 10px; display: none;"></p>
     </div>
 
     <div class="card" id="success-state">
         <h1>Welcome to Rewire!</h1>
         <p>Your password has been set successfully.</p>
-        <p><strong>Step 2:</strong> Download the app and log in with the email you used for payment.</p>
+        <p><strong>Final Step:</strong> Download the app and log in using the same email you used for payment.</p>
         
         <a href="#" class="store-button">Download for iOS</a>
+        <div style="margin: 8px 0;"></div>
         <a href="#" class="store-button">Download for Android</a>
     </div>
 
     <script>
-        const supabaseUrl = 'YOUR_SUPABASE_URL';
-        const supabaseKey = 'YOUR_SUPABASE_ANON_KEY';
-        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+        const supabaseUrl = 'https://qmyjzsujfwmxscxdsvjh.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFteWp6c3VqZndteHNjeGRzdmpoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA5NzkyNTQsImV4cCI6MjA4NjU1NTI1NH0.n-BO_BTAzGl8V2uachXbGWWn2p3woozW21gp_unP-28';
+        
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
         async function handlePasswordUpdate() {
             const password = document.getElementById('new-password').value;
@@ -55,8 +57,9 @@
 
             btn.disabled = true;
             btn.innerText = "Saving...";
+            errorMsg.style.display = "none";
 
-            const { error } = await supabase.auth.updateUser({ password: password });
+            const { error } = await supabaseClient.auth.updateUser({ password: password });
 
             if (error) {
                 errorMsg.innerText = error.message;
