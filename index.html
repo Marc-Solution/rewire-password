@@ -40,20 +40,21 @@
     </div>
 
     <script>
-        // 1. UPDATED: Cleanly grab the email from the URL parameter (?email=)
-        const urlParams = new URLSearchParams(window.location.search);
-        const emailParam = urlParams.get('email');
-        
-        if (emailParam) {
-            document.getElementById('user-email').innerText = decodeURIComponent(emailParam);
-        }
+        // 1. Grab email from URL
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const emailParam = urlParams.get('email');
+            if (emailParam) {
+                document.getElementById('user-email').innerText = decodeURIComponent(emailParam);
+            }
+        };
 
-        // 2. Supabase Configuration
+        // 2. Supabase Config
         const supabaseUrl = 'https://qmyjzsujfwmxscxdsvjh.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFteWp6c3VqZndteHNjeGRzdmpoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA5NzkyNTQsImV4cCI6MjA4NjU1NTI1NH0.n-BO_BTAzGl8V2uachXbGWWn2p3woozW21gp_unP-28';
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
-        // 3. Password Logic
+        // 3. Update Password Function
         async function handlePasswordUpdate() {
             const password = document.getElementById('new-password').value;
             const btn = document.getElementById('save-btn');
