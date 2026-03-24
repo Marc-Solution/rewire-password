@@ -15,14 +15,14 @@
         button:disabled { background-color: #ccc; }
         #success-state { display: none; }
         .store-button { display: inline-block; margin-top: 10px; padding: 12px 20px; background: #000; color: white; text-decoration: none; border-radius: 6px; width: 90%; font-weight: 600; }
-        .email-display { font-weight: bold; color: #000; }
+        .email-display { font-weight: bold; color: #000; word-break: break-all; }
     </style>
 </head>
 <body>
 
     <div class="card" id="form-state">
         <h1>Set your password</h1>
-        <p>Setting password for: <span id="user-email" class="email-display">your account</span></p>
+        <p>Setting password for: <br><span id="user-email" class="email-display">your account</span></p>
         
         <input type="password" id="new-password" placeholder="New Password (min 6 chars)" required>
         <button id="save-btn" onclick="handlePasswordUpdate()">Save Password</button>
@@ -40,11 +40,12 @@
     </div>
 
     <script>
-        // 1. Smoothly grab the email from the URL to remind the user
-        const hash = window.location.hash;
-        if (hash && hash.includes('email=')) {
-            const email = hash.split('email=')[1];
-            document.getElementById('user-email').innerText = decodeURIComponent(email);
+        // 1. UPDATED: Cleanly grab the email from the URL parameter (?email=)
+        const urlParams = new URLSearchParams(window.location.search);
+        const emailParam = urlParams.get('email');
+        
+        if (emailParam) {
+            document.getElementById('user-email').innerText = decodeURIComponent(emailParam);
         }
 
         // 2. Supabase Configuration
