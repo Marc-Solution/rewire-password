@@ -28,15 +28,23 @@
         <p id="error-msg" style="color: #ff4d4d; margin-top: 10px; display: none;"></p>
     </div>
 
-    <div class="card" id="success-state">
-        <h1>Welcome to Rewire!</h1>
-        <p>Your password has been set successfully.</p>
-        <p><strong>Final Step:</strong> Download the app and log in using the same email you used for payment.</p>
-        
-        <a href="#" class="store-button">Download for iOS</a>
-        <div style="margin: 8px 0;"></div>
-        <a href="#" class="store-button">Download for Android</a>
-    </div>
+   <div class="card" id="form-state">
+    <h1>Set your password</h1>
+    <p>Setting password for: <span id="user-email" class="email-display">your account</span></p>
+    
+    <input type="password" id="new-password" placeholder="New Password (min 6 chars)" required>
+    <button id="save-btn" onclick="handlePasswordUpdate()">Save Password</button>
+    <p id="error-msg" style="color: #ff4d4d; margin-top: 10px; display: none;"></p>
+</div>
+
+<script>
+    // Smoothly grab the email from the URL to remind the user
+    const hash = window.location.hash;
+    if (hash && hash.includes('email=')) {
+        const email = hash.split('email=')[1];
+        document.getElementById('user-email').innerText = decodeURIComponent(email);
+    }
+</script>
 
     <script>
         const supabaseUrl = 'https://qmyjzsujfwmxscxdsvjh.supabase.co';
