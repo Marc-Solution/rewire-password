@@ -15,43 +15,44 @@
         button:disabled { background-color: #ccc; }
         #success-state { display: none; }
         .store-button { display: inline-block; margin-top: 10px; padding: 12px 20px; background: #000; color: white; text-decoration: none; border-radius: 6px; width: 90%; font-weight: 600; }
+        .email-display { font-weight: bold; color: #000; }
     </style>
 </head>
 <body>
 
     <div class="card" id="form-state">
         <h1>Set your password</h1>
-        <p>Choose a password to start using your Rewire account.</p>
+        <p>Setting password for: <span id="user-email" class="email-display">your account</span></p>
         
         <input type="password" id="new-password" placeholder="New Password (min 6 chars)" required>
         <button id="save-btn" onclick="handlePasswordUpdate()">Save Password</button>
         <p id="error-msg" style="color: #ff4d4d; margin-top: 10px; display: none;"></p>
     </div>
 
-   <div class="card" id="form-state">
-    <h1>Set your password</h1>
-    <p>Setting password for: <span id="user-email" class="email-display">your account</span></p>
-    
-    <input type="password" id="new-password" placeholder="New Password (min 6 chars)" required>
-    <button id="save-btn" onclick="handlePasswordUpdate()">Save Password</button>
-    <p id="error-msg" style="color: #ff4d4d; margin-top: 10px; display: none;"></p>
-</div>
-
-<script>
-    // Smoothly grab the email from the URL to remind the user
-    const hash = window.location.hash;
-    if (hash && hash.includes('email=')) {
-        const email = hash.split('email=')[1];
-        document.getElementById('user-email').innerText = decodeURIComponent(email);
-    }
-</script>
+    <div class="card" id="success-state">
+        <h1>Welcome to Rewire!</h1>
+        <p>Your password has been set successfully.</p>
+        <p><strong>Final Step:</strong> Download the app and log in using the email shown above.</p>
+        
+        <a href="#" class="store-button">Download for iOS</a>
+        <div style="margin: 8px 0;"></div>
+        <a href="#" class="store-button">Download for Android</a>
+    </div>
 
     <script>
+        // 1. Smoothly grab the email from the URL to remind the user
+        const hash = window.location.hash;
+        if (hash && hash.includes('email=')) {
+            const email = hash.split('email=')[1];
+            document.getElementById('user-email').innerText = decodeURIComponent(email);
+        }
+
+        // 2. Supabase Configuration
         const supabaseUrl = 'https://qmyjzsujfwmxscxdsvjh.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFteWp6c3VqZndteHNjeGRzdmpoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA5NzkyNTQsImV4cCI6MjA4NjU1NTI1NH0.n-BO_BTAzGl8V2uachXbGWWn2p3woozW21gp_unP-28';
-        
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
+        // 3. Password Logic
         async function handlePasswordUpdate() {
             const password = document.getElementById('new-password').value;
             const btn = document.getElementById('save-btn');
